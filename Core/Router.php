@@ -109,7 +109,7 @@ class Router {
 			foreach (self::$route as $option) {
 				$buffer[$option] = $route['options'][$option];
 			}
-			$buffer['route'] = ($parent?("$parent/"):'').str_replace(['[', ']', ':action'], ['', '', $buffer['action']], $buffer['route']);
+			$buffer['route'] = ($parent?("$parent/"):'').str_replace(['/', '[', ']', ':action'], ['', '', '', $buffer['action']], $buffer['route']);
 
 			self::setRoute((object)$buffer);
 

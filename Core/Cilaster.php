@@ -14,33 +14,29 @@ use Cilaster\API\View;
 
 class Cilaster {
     public static function run() {
-    	if (!IS_INSTALLED) {
-    		$mvc = new Mvc();
-
-            $mvc->redirect($mvc->url('/install.php', [
-                'product' => 'cilaster',
-                'step' => 1,
-            ]));
-        }
-
-        $uri_exist = Router::uri_exist();
-
-        $view = new View();
-    	if (!$uri_exist) { $view->generateErrorPage(); }
-    	$view->generate();
-    }
-
-    public static function adminPanelRun() {
-    	// TODO: admin.
-
-        return null;
-    }
-
-    public static function install() {
 		$uri_exist = Router::uri_exist();
 
+		$mvc = new Mvc();
 		$view = new View();
-		if (!$uri_exist) { $view->generateErrorPage(); }
-		$view->generate();
+
+		if (Router::$route->action == 'rest') {
+			header('Content-Type: application/json; charset=utf-8');
+
+			$configs = new Config('application/database');
+			(new \Cilaster\DB\Tools\EntityManager($configs->get()))->create()->getEntityManager();
+
+			\Cilaster\Rest\Rest::start();
+		} else {
+			if (!IS_INSTALLED && Router::$route->action != 'install') {
+				$mvc->redirect($mvc->url('/install.php', [
+					'product' => 'cilaster',
+					'step' => 1,
+				]));
+			}
+
+			if (!$uri_exist) { $view->generateErrorPage(); }
+
+			$view->generate();
+		}
     }
 }

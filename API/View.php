@@ -123,7 +123,7 @@ class View {
 
 			$content = Router::getContent();
 
-			if (!file_exists($layout)) { die('layout not found'); }
+			if (!file_exists($layout)) { die("layout: $layout  not found"); }
 		} catch (\Exception $exception) {
 			$content = (new ExceptionGenerator($exception))->get();
 		}
@@ -142,7 +142,7 @@ class View {
 	 * @return mixed
 	 */
 	public function generateErrorPage() {
-		return require_once THEMES_ROOT.'\\'.$this->getTheme().'\\404.html';
+		return require THEMES_ROOT."/{$this->getTheme()}/404.html";
 	}
 
 	/**

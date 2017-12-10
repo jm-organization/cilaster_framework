@@ -12,10 +12,8 @@
 namespace Cilaster\Rest;
 
 
-use Cilaster\API\CilasterException\RestException;
-use Cilaster\API\Model;
 use Cilaster\API\Request\PostRequest;
-use Cilaster\API\Request\Requests;
+use Cilaster\API\Request\Request;
 use Cilaster\DB\Tools\DBConnect;
 
 class RestAPI
@@ -37,7 +35,7 @@ class RestAPI
 	}
 
 	public function method($method_name) {
-		$request = new Requests();
+		$request = new Request();
 
 		$this->setResponse([
 			'status' => false,
