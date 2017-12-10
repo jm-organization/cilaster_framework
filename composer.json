@@ -1,0 +1,38 @@
+{
+  "name": "jm-organization/cilaster_framework",
+  "description": "PHP Framework",
+  "type": "metapackage",
+  "keywords": [
+    "php",
+    "cilaster",
+    "framework",
+    "jm-organization"
+  ],
+  "homepage": "http://www.jm-org.net/portfolio/cilaster",
+  "license": "Apache-2.0",
+  "require": {
+    "php": "^5.6",
+    "doctrine/orm":"2.5.*"
+  },
+  "autoload": {
+    "psr-0": {
+      "Doctrine\\ORM\\":"vendor/doctrine/orm/lib",
+      "Doctrine\\DBAL\\":"vendor/doctrine/dbal/lib",
+      "Doctrine\\Common\\Lexer\\":"vendor/doctrine/lexer/lib",
+      "Doctrine\\Common\\Inflector\\":"vendor/doctrine/inflector/lib",
+      "Doctrine\\Common\\Collections\\":"vendor/doctrine/collections/lib"
+    },
+    "psr-4": {
+      "Cilaster\\API\\": "API/",
+      "Cilaster\\Core\\": "Core/",
+      "Cilaster\\DB\\": "DB/",
+      "Cilaster\\MVC\\": "MVC/",
+      "Cilaster\\Rest\\": "Rest/",
+      "Cilaster\\Cli\\": "Cli/"
+    },
+    "files": [
+      "cilaster.php",
+      "Core/constants.php"
+    ]
+  }
+}
