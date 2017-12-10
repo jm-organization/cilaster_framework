@@ -16,47 +16,39 @@ use Cilaster\API\CilasterException\ExceptionGenerator;
 use Cilaster\API\CilasterException\MvcException;
 use Cilaster\API\Http\Mvc;
 use Cilaster\API\Http\Server;
-use Cilaster\API\Request\GetRequest;
+use Cilaster\API\Navigation\Navigation;
 use Cilaster\Core\Config;
 use Cilaster\Core\Router;
 
 class View {
 	public $title;
-
 	public $short_title;
-
 	public $view_port = false;
 
 	public $theme;
 
-	public function setTitle($title) {
+	private function setTitle($title) {
 		return $this->title = $title;
+	}
+	private function setShortTitle($short_title) {
+		$this->short_title = $short_title;
+	}
+	private function setViewPort($view_port) {
+		$this->view_port = $view_port;
+	}
+	private function setTheme($theme) {
+		$this->theme = $theme;
 	}
 
 	public function getTitle() {
 		return $this->title;
 	}
-
-	public function setShortTitle( $short_title ) {
-		$this->short_title = $short_title;
-	}
-
 	public function getShortTitle() {
 		return $this->short_title;
 	}
-
-	public function setViewPort( $view_port ) {
-		$this->view_port = $view_port;
-	}
-
 	public function isViewPort() {
 		return $this->view_port;
 	}
-
-	public function setTheme( $theme ) {
-		$this->theme = $theme;
-	}
-
 	public function getTheme() {
 		return $this->theme;
 	}
@@ -88,20 +80,11 @@ class View {
 	 * @return string
 	 */
 	private function generateTitle() {
-		$config = (new Config('application'))->get('title');
+		$navigator = new Navigation('default', new Router());
 
-		$config_title = trim($config);
-		$this->setShortTitle(($config_title != '')?$config_title:'Cilaster CMS');
+		$this->setShortTitle($navigator->getShortTitle());
 
-		$page_config_title = Router::$route->title;
-
-		if (!IS_INSTALLED) {
-			$page_config_title = str_replace('{object}', (new GetRequest())->content()->get('product'), Router::$route->title);
-		}
-
-		$page_title = (($page_config_title)?$page_config_title.' | ':'').$this->getShortTitle();
-
-		return $page_title;
+		return $navigator->getTitle();
 	}
 
 	/**
@@ -231,10 +214,7 @@ class View {
 				}
 
 				global $mvc, $view;
-				$ModuleView = '\\Cilaster\\MVC\\'.Router::$route->module.'\\'.Router::$route->module.'View';
-				if (!class_exists($ModuleView)) {
-					$ModuleView = '\\Module\\'.Router::$route->module.'\\'.Router::$route->module.'View';
-				}
+				$ModuleView = 'Module\\'.Router::$route->module.'\\'.Router::$route->module.'View';
 				$view = new $ModuleView();
 				$mvc = new Mvc();
 
@@ -267,10 +247,7 @@ class View {
 			}
 
 			global $mvc, $view;
-			$ModuleView = '\\Cilaster\\MVC\\'.Router::$route->module.'\\'.Router::$route->module.'View';
-			if (!class_exists($ModuleView)) {
-				$ModuleView = '\\Module\\'.Router::$route->module.'\\'.Router::$route->module.'View';
-			}
+			$ModuleView = 'Module\\'.Router::$route->module.'\\'.Router::$route->module.'View';
 			$view = new $ModuleView();
 			$mvc = new Mvc();
 
