@@ -1,7 +1,6 @@
 {
   "name": "jm-organization/cilaster_framework",
   "description": "PHP Framework",
-  "type": "metapackage",
   "keywords": [
     "php",
     "cilaster",
