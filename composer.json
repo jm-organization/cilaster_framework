@@ -1,6 +1,7 @@
 {
   "name": "jm-organization/cilaster_framework",
   "description": "PHP Framework",
+  "type": "library",
   "keywords": [
     "php",
     "cilaster",
