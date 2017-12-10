@@ -179,19 +179,19 @@ class View {
 	}
 
 	public function bootstrapPath($file) {
-		if (!$this->isExistExtension('_bootstrap/'.$file)) { return $this->basePath(); }
+		if (!$this->isExistExtension('/_bootstrap/'.$file)) { return $this->basePath(); }
 
 		return $this->rootPath().'_bootstrap/'.$file;
 	}
 
 	public function semanticPath($file) {
-		if (!$this->isExistExtension('_semantic/'.$file)) { return $this->basePath(); }
+		if (!$this->isExistExtension('/_semantic/'.$file)) { return $this->basePath(); }
 
 		return $this->rootPath().'_semantic/'.$file;
 	}
 
 	public function pluginsPath($file) {
-		if (!$this->isExistExtension('_plugins/'.$file)) { return $this->basePath(); }
+		if (!$this->isExistExtension('/_plugins/'.$file)) { return $this->basePath(); }
 
 		return $this->rootPath().'_plugins/'.$file;
 	}

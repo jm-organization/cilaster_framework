@@ -16,6 +16,7 @@ namespace Cilaster\Core;
 use Cilaster\API\CilasterException\CException;
 use Cilaster\API\CilasterException\MvcException;
 use Cilaster\API\Request\Request;
+use Composer\Autoload\ClassLoader;
 
 class Router {
 	const reserve = ['install', 'update', 'rest', 'admin'];
@@ -133,15 +134,25 @@ class Router {
 	 */
 	public static function start() {
     	$controller = (self::$route->module).'Controller';
+    	$view = (self::$route->module).'View';
+    	$model = (self::$route->module).'Model';
         $action = (self::$route->action).'Action';
 
-        switch (true) {
-			case file_exists(MODULES_ROOT.'/'.self::$route->module):
-				require_once MODULES_ROOT.'/'.self::$route->module."/$controller.php";
+        $module_root = MODULES_ROOT.'/'.self::$route->module;
 
-				$namespace = self::$route->module."/$controller";
-				$app_controller = str_replace('/', '\\', "Cilaster/$namespace");
-				$AppController = new $app_controller();
+        switch (true) {
+			case (file_exists($module_root) &&
+				 file_exists($module_root."/$model.php") &&
+				 file_exists($module_root."/$view.php") &&
+				 file_exists($module_root."/$controller.php")):
+				$namespace = self::$route->module;
+
+				if (class_exists("Module\\$namespace\\$controller")) {
+					$app_controller = "Module\\$namespace\\$controller";
+					$AppController = new $app_controller();
+				} else {
+					throw MvcException::UndefinedModule(self::$route->module);
+				}
 
 				if (method_exists($AppController, $action)) { $content = $AppController->$action(); } else {
 					throw MvcException::UndefinedMethodInController($action, get_class($AppController));

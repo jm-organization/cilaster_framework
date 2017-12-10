@@ -30,6 +30,9 @@
       "Cilaster\\Rest\\": "Rest/",
       "Cilaster\\Cli\\": "Cli/"
     },
-    "files": [ "Core/constants.php" ]
+    "files": [
+      "installed.php",
+      "Core/constants.php"
+    ]
   }
 }
