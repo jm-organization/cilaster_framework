@@ -135,24 +135,17 @@ class Router {
     	$controller = (self::$route->module).'Controller';
         $action = (self::$route->action).'Action';
 
-        $engine_root = __DIR__.'/../MVC/';
         switch (true) {
-			case file_exists($engine_root.self::$route->module):
-				require_once $engine_root.self::$route->module."/$controller.php";
+			case file_exists(MODULES_ROOT.'/'.self::$route->module):
+				require_once MODULES_ROOT.'/'.self::$route->module."/$controller.php";
 
-				$namespace = "MVC/".self::$route->module."/$controller";
+				$namespace = self::$route->module."/$controller";
 				$app_controller = str_replace('/', '\\', "Cilaster/$namespace");
 				$AppController = new $app_controller();
 
 				if (method_exists($AppController, $action)) { $content = $AppController->$action(); } else {
 					throw MvcException::UndefinedMethodInController($action, get_class($AppController));
 				}
-				break;
-
-			case file_exists(MODULES_ROOT.'/'.self::$route->module):
-				$content = 'TODO';
-
-				// TODO: add `module` support;
 				break;
 
 			default: throw MvcException::UndefinedModule(self::$route->module); break;
